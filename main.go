@@ -67,10 +67,15 @@ func reset() {
 }
 
 // Resets the Game to a new game state
-func resetListener() {
+func keyListener() error {
 	if ebiten.IsKeyPressed(ebiten.KeyR) {
 		reset()
 	}
+	if ebiten.IsKeyPressed(ebiten.KeyQ) {
+		fmt.Println("Q is pressed, but are we terminated?")
+		return ebiten.Termination
+	}
+	return nil
 }
 
 // Paddle Methods
@@ -172,7 +177,10 @@ func (g *Game) Update() error {
 	ball.update()
 	ball.collide()
 	// MORE GAME FUNCTIONALITY HERE!
-	resetListener() // Hit R to RESET GAME
+	// Hit R to RESET GAME & Q to QUIT on desktop
+	if err := keyListener(); err != nil {
+		return err // ✨ MUST return this!
+	}
 	return nil
 }
 
