@@ -177,9 +177,28 @@ func (d *Ball) reset() {
 	state.start = true
 }
 
+// AI MODE
+func dumbAI(p *Paddle, b *Ball) {
+	//Naive implentation: look where ball is, move paddle towards it.
+	//Where is ball y 0 top y=screenHeight is bottom
+
+	//move paddle up
+	if b.y < p.y && p.y >= 0 {
+		p.y -= 4
+	}
+	//down
+	if b.y > p.y && p.y <= screenHeight-PaddleHeight {
+		p.y += 4
+	}
+}
+
 func (g *Game) Update() error {
 	p1.updatePaddle1()
-	p2.updatePaddle2()
+	if state.AI {
+		dumbAI(&p2, &ball)
+	} else {
+		p2.updatePaddle2()
+	}
 	ball.update()
 	ball.collide()
 	// MORE GAME FUNCTIONALITY HERE!
