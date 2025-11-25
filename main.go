@@ -143,7 +143,7 @@ func (d *Ball) collide() {
 	if d.vx < 0 {
 		//check to see if ball collides with player 1 paddle on left
 		if d.x <= p1.x && p1.x <= d.x+PaddleWidth && p1.y <= d.y && d.y <= PaddleHeight+p1.y {
-			d.vy = -d.vy
+			d.vy = -d.vy * (rand.Float32() + 1) // Add some randomness
 			d.vx = -d.vx
 			//cap the ball speed or else it gets too fast and flies through the paddles without getting detected as a collision!
 			if d.speed < 5.0 {
@@ -154,7 +154,7 @@ func (d *Ball) collide() {
 	if d.vx > 0 {
 		//check to see if ball collides with player 2 paddle on right
 		if d.x <= p2.x && p2.x <= d.x+PaddleWidth && p2.y <= d.y && d.y <= PaddleHeight+p2.y {
-			d.vy = -d.vy
+			d.vy = -d.vy * (rand.Float32() + 1)
 			d.vx = -d.vx
 			if d.speed < 5.0 {
 				d.speed += .5
