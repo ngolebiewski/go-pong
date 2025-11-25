@@ -10,6 +10,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
@@ -46,6 +47,7 @@ type Player struct {
 
 type State struct {
 	start bool
+	AI    bool
 }
 
 // Init entitites in game
@@ -54,7 +56,7 @@ var p2 = Paddle{x: 305.0, y: screenHeight/2 - PaddleHeight/2, Width: PaddleWidth
 var ball = Ball{x: screenWidth / 2, y: screenHeight / 2, vx: 0, vy: 0, speed: ballInitSpeed}
 var player1 = Player{score: 0}
 var player2 = Player{score: 0}
-var state = State{start: true}
+var state = State{start: true, AI: false}
 
 // Seems too similar to the init!!! Starts game over.
 func reset() {
@@ -74,6 +76,10 @@ func keyListener() error {
 	if ebiten.IsKeyPressed(ebiten.KeyQ) {
 		fmt.Println("Q is pressed, but are we terminated?")
 		return ebiten.Termination
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyA) {
+		state.AI = !state.AI
+		fmt.Println("AI mode is turned", map[bool]string{true: "on", false: "off"}[state.AI])
 	}
 	return nil
 }

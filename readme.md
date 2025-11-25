@@ -11,7 +11,7 @@ Theoretically, to present in a short talk where I will live code Pong.
 | Move Down | S | Down Arrow |
 | Serve Ball | Space or Enter | - |
 | Reset Game | R | - |
-| Quit Game | Click on X (Upper Left) | - |
+| Quit Game | Click on X (Upper Left) | Q |
 
 Fun, as Go is known as a backend language.
 
