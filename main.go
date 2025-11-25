@@ -56,6 +56,7 @@ var player1 = Player{score: 0}
 var player2 = Player{score: 0}
 var state = State{start: true}
 
+// Seems too similar to the init!!! Starts game over.
 func reset() {
 	p1 = Paddle{x: 10.0, y: screenHeight/2 - PaddleHeight/2, Width: PaddleWidth, Height: PaddleHeight}
 	p2 = Paddle{x: 305.0, y: screenHeight/2 - PaddleHeight/2, Width: PaddleWidth, Height: PaddleHeight}
@@ -113,8 +114,6 @@ func (d *Ball) update() {
 	//move ball
 	d.x += d.vx * d.speed
 	d.y += d.vy * d.speed
-	//collissions?
-	// d.x += 1 * d.speed // test to move it!
 }
 
 func (d *Ball) collide() {
@@ -134,11 +133,7 @@ func (d *Ball) collide() {
 		d.reset()
 	}
 
-	//not sure if paddle collisions belong here, since it smashes these two groupings together, but that is in fact a COLLISSION
-	//reflect off paddles
-	// if dx is left (neg) we check on p1. if dx is right (pos) we check for p2
-
-	//Add in 1/2 ball radius to the X and Y!!!
+	//TODO: Add in 1/2 ball radius to the X and Y!!!
 
 	if d.vx < 0 {
 		//check to see if ball collides with player 1 paddle on left
