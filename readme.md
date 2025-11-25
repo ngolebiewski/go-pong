@@ -16,6 +16,15 @@ Theoretically, to present in a short talk where I will live code Pong.
 
 Fun, as Go is known as a backend language.
 
+### INSTALL & RUN
+
+- (Step 0) Install Go if you don't have it. https://go.dev/dl/
+- `git clone https://github.com/ngolebiewski/go-pong.git`
+- `cd go-pong`
+- `go run .`
+- OR BUILD A BINARY: `go build -o go-pong`
+`./go-pong`
+
 ### NOTES
 	// Hit space to start ball -- start state
 	// -> make function to restart ball
