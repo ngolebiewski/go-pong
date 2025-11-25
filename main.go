@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image/color"
 	"log"
+	"math"
 	"math/rand"
 	"strconv"
 
@@ -13,12 +14,13 @@ import (
 )
 
 const (
-	screenWidth  = 320
-	screenHeight = 240
-	PaddleWidth  = 5.0
-	PaddleHeight = 40.0
-	PaddleSpeed  = 4.0
-	ballWidth    = 5.0
+	screenWidth   = 320
+	screenHeight  = 240
+	PaddleWidth   = 5.0
+	PaddleHeight  = 40.0
+	PaddleSpeed   = 4.0
+	ballWidth     = 5.0
+	ballInitSpeed = 2.0
 )
 
 type Game struct{}
@@ -49,7 +51,7 @@ type State struct {
 // Init entitites in game
 var p1 = Paddle{x: 10.0, y: screenHeight/2 - PaddleHeight/2, Width: PaddleWidth, Height: PaddleHeight}
 var p2 = Paddle{x: 305.0, y: screenHeight/2 - PaddleHeight/2, Width: PaddleWidth, Height: PaddleHeight}
-var ball = Ball{x: screenWidth / 2, y: screenHeight / 2, vx: 0, vy: 0, speed: 5.0}
+var ball = Ball{x: screenWidth / 2, y: screenHeight / 2, vx: 0, vy: 0, speed: ballInitSpeed}
 var player1 = Player{score: 0}
 var player2 = Player{score: 0}
 var state = State{start: true}
@@ -57,12 +59,13 @@ var state = State{start: true}
 func reset() {
 	p1 = Paddle{x: 10.0, y: screenHeight/2 - PaddleHeight/2, Width: PaddleWidth, Height: PaddleHeight}
 	p2 = Paddle{x: 305.0, y: screenHeight/2 - PaddleHeight/2, Width: PaddleWidth, Height: PaddleHeight}
-	ball = Ball{x: screenWidth / 2, y: screenHeight / 2, vx: 0, vy: 0, speed: 1.0}
+	ball = Ball{x: screenWidth / 2, y: screenHeight / 2, vx: 0, vy: 0, speed: ballInitSpeed}
 	player1 = Player{score: 0}
 	player2 = Player{score: 0}
 	state = State{start: true}
 }
 
+// Resets the Game to a new game state
 func resetListener() {
 	if ebiten.IsKeyPressed(ebiten.KeyR) {
 		reset()
@@ -79,7 +82,6 @@ func (d *Paddle) updatePaddle1() {
 		d.y += -PaddleSpeed
 	} else if ebiten.IsKeyPressed(ebiten.KeyS) && d.y <= screenHeight-PaddleHeight {
 		d.y += PaddleSpeed
-		fmt.Println(screenHeight, d.y)
 	}
 }
 func (d *Paddle) updatePaddle2() {
@@ -98,36 +100,83 @@ func (b *Ball) drawBall(screen *ebiten.Image) {
 func (d *Ball) update() {
 	if state.start {
 		if ebiten.IsKeyPressed(ebiten.KeySpace) || ebiten.IsKeyPressed(ebiten.KeyEnter) {
-			d.vx += (rand.Float32() - .5) * 2 * d.speed
-			d.vy += (rand.Float32() / 2) * d.speed
+			dirX := float32(1.0)
+			if rand.Float32() < .5 {
+				dirX = -dirX
+			}
+			d.vx += dirX
+			d.vy += float32(math.Min((rand.Float64()-.5)*4, 1.8))
+			fmt.Println("Random start velocity -- vx:", d.vx, "vy:", d.vy)
 			state.start = !state.start
 		}
 	}
 	//move ball
-	d.x += d.vx
-	d.y += d.vy
+	d.x += d.vx * d.speed
+	d.y += d.vy * d.speed
 	//collissions?
-
 	// d.x += 1 * d.speed // test to move it!
+}
+
+func (d *Ball) collide() {
+	//bounce off top or bottom
+	if d.y <= 0 || d.y >= screenHeight {
+		d.vy = -d.vy
+	}
+	//out of bounds left/right
+	if d.x < 0 {
+		player2.score++
+		fmt.Println("LEFT Player One: ", player1.score, " Player Two: ", player2.score)
+		d.reset()
+	}
+	if d.x > screenWidth {
+		player1.score++
+		fmt.Println("RIGHT Player One: ", player1.score, " Player Two: ", player2.score)
+		d.reset()
+	}
+
+	//not sure if paddle collisions belong here, since it smashes these two groupings together, but that is in fact a COLLISSION
+	//reflect off paddles
+	// if dx is left (neg) we check on p1. if dx is right (pos) we check for p2
+
+	//Add in 1/2 ball radius to the X and Y!!!
+
+	if d.vx < 0 {
+		//check to see if ball collides with player 1 paddle on left
+		if d.x <= p1.x && p1.x <= d.x+PaddleWidth && p1.y <= d.y && d.y <= PaddleHeight+p1.y {
+			d.vy = -d.vy
+			d.vx = -d.vx
+			//cap the ball speed or else it gets too fast and flies through the paddles without getting detected as a collision!
+			if d.speed < 5.0 {
+				d.speed += .5
+			}
+		}
+	}
+	if d.vx > 0 {
+		//check to see if ball collides with player 2 paddle on right
+		if d.x <= p2.x && p2.x <= d.x+PaddleWidth && p2.y <= d.y && d.y <= PaddleHeight+p2.y {
+			d.vy = -d.vy
+			d.vx = -d.vx
+			if d.speed < 5.0 {
+				d.speed += .5
+			}
+		}
+	}
+	//
 }
 
 func (d *Ball) reset() {
 	d.x = screenWidth / 2
 	d.y = screenHeight / 2
 	d.vx, d.vy, d.speed = 0, 0, 1.0
+	state.start = true
 }
 
 func (g *Game) Update() error {
 	p1.updatePaddle1()
 	p2.updatePaddle2()
 	ball.update()
-	// Hit space to start ball -- start state
-	// -> make function to restart ball
-	// Ball updates with some sort of direction!!!! should not be straight up down! How do you do that, radians?
-	// Ball picks up velocity each hit, Direction opposite of incoming force? Based on where it hits paddle? --> ALL ABOUT THE velocityx and vy for the direction!
-	// if player misses (goes over The 'X' borders) other player gets a point
-	//
-	// make an AI opponent, and have it shout insults! LOL.
+	ball.collide()
+	// MORE GAME FUNCTIONALITY HERE!
 	resetListener() // Hit R to RESET GAME
 	return nil
 }
