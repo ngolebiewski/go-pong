@@ -195,6 +195,7 @@ func dumbAI(p *Paddle, b *Ball) {
 func (g *Game) Update() error {
 	p1.updatePaddle1()
 	if state.AI {
+		// dumbAI(&p2, &ball)
 		dumbAI(&p2, &ball)
 	} else {
 		p2.updatePaddle2()
