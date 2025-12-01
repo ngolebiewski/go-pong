@@ -33,7 +33,10 @@ Fun, as Go is known as a backend language.
     🏓 Added randomness to Y-axis velocity on paddle hits with a random generator. Otherwise you could get in a conidtion where the paddles remain static and just ping and pong back and forth forever. https://gobyexample.com/random-numbers
 	// if player misses (goes over The 'X' borders) other player gets a point
      // Add Q key to quit: NOTE: the Update function in the Game loop needs to return a specific 'Termination' error to cleanly exit: ebiten.Termination
-     // Added a very naive implementation of an AI player. It only tracks the Y value of the ball and moves accordingly. A smarter AI would idle after hitting the ball, and do some basic visual calculations with some random timeouts to GUESS where it may go. 
+     // Added a very naive implementation of an AI player. It only tracks the Y value of the ball and moves accordingly. A smarter AI would idle after hitting the ball, and do some basic visual calculations with some random timeouts to GUESS where it may go.
+     - Make 'AI' slightly smarter thand just following the y axis of the ball like a mirror.
+        1. Return to center and pause after own paddle hits ball until the ball is 2/3 across the screen. Then move in mirror fashion.
+        2. The y value of the paddle is the top left corner, so adjust code to accomodate for that. 
 
 ### TODO
    

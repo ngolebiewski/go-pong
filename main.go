@@ -182,13 +182,25 @@ func dumbAI(p *Paddle, b *Ball) {
 	//Naive implentation: look where ball is, move paddle towards it.
 	//Where is ball y 0 top y=screenHeight is bottom
 
-	//move paddle up
-	if b.y < p.y && p.y >= 0 {
-		p.y -= 4
-	}
-	//down
-	if b.y > p.y && p.y <= screenHeight-PaddleHeight {
-		p.y += 4
+	// move to center when ball first rebounds off own paddle
+	if b.vx < 0 && b.x > screenWidth*1/4 {
+		if b.y < p.y && p.y >= screenHeight/2 {
+			p.y -= 4
+		}
+		//down
+		if b.y > p.y && p.y <= screenHeight-PaddleHeight/2 {
+			p.y += 4
+		}
+
+	} else {
+		//move paddle up
+		if b.y < p.y+(PaddleHeight/3) && p.y >= 0 {
+			p.y -= 4
+		}
+		//down
+		if b.y > p.y && p.y <= screenHeight-PaddleHeight {
+			p.y += 4
+		}
 	}
 }
 
