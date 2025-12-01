@@ -30,7 +30,7 @@ Fun, as Go is known as a backend language.
 	// -> make function to restart ball
 	// Ball updates with some sort of direction!!!! should not be straight up down! How do you do that, radians?
 	// Ball picks up velocity each hit, Direction opposite of incoming force? Based on where it hits paddle? --> ALL ABOUT THE velocityx and vy for the direction!
-    🏓 Added randomness to Y-axis velocity on paddle hits with a random generator. Otherwise you could get in a conidtion where the paddles remain static and just ping and pong back and forth forever. https://gobyexample.com/random-numbers
+    🏓 Added randomness to Y-axis velocity on paddle hits with a random generator. Otherwise you could get in a condition where the paddles remain static and just ping and pong back and forth forever. https://gobyexample.com/random-numbers
 	// if player misses (goes over The 'X' borders) other player gets a point
      // Add Q key to quit: NOTE: the Update function in the Game loop needs to return a specific 'Termination' error to cleanly exit: ebiten.Termination
      // Added a very naive implementation of an AI player. It only tracks the Y value of the ball and moves accordingly. A smarter AI would idle after hitting the ball, and do some basic visual calculations with some random timeouts to GUESS where it may go.

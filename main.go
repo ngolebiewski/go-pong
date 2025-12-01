@@ -183,7 +183,7 @@ func dumbAI(p *Paddle, b *Ball) {
 	//Where is ball y 0 top y=screenHeight is bottom
 
 	// move to center when ball first rebounds off own paddle
-	if b.vx < 0 && b.x > screenWidth*1/4 {
+	if b.vx < 0 && b.x > screenWidth/7 {
 		if b.y < p.y && p.y >= screenHeight/2 {
 			p.y -= 4
 		}
@@ -193,8 +193,8 @@ func dumbAI(p *Paddle, b *Ball) {
 		}
 
 	} else {
-		//move paddle up
-		if b.y < p.y+(PaddleHeight/3) && p.y >= 0 {
+		//move paddle up -- and uh oh, there's a magic number!
+		if b.y < p.y-PaddleHeight+ballWidth && p.y >= 0 {
 			p.y -= 4
 		}
 		//down
