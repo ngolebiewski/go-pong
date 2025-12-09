@@ -188,7 +188,7 @@ func dumbAI(p *Paddle, b *Ball) {
 			p.y -= 4
 		}
 		//down
-		if b.y > p.y-(PaddleHeight/2) && p.y+(PaddleHeight/2) <= screenHeight/2 {
+		if b.y > p.y-PaddleHeight && p.y+(PaddleHeight/2) <= screenHeight/2 {
 			p.y += 4
 		}
 
@@ -198,7 +198,7 @@ func dumbAI(p *Paddle, b *Ball) {
 			p.y -= 4
 		}
 		//down
-		if b.y > p.y && p.y+(PaddleHeight/2) <= screenHeight-PaddleHeight-4 {
+		if b.y > p.y && p.y+(PaddleHeight/2) <= screenHeight {
 			p.y += 4
 		}
 	}

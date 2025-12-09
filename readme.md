@@ -40,11 +40,13 @@ Fun, as Go is known as a backend language.
 
 ### TODO
    
-	// imporve the AI opponent, and have it shout insults! LOL.
-    // i.e. "I beat Gary Kasparov, Deep Blue, and now I will destroy you."
-    // STATE MACHINE
+	* improve the AI opponent, and have it shout insults! LOL.
+    * i.e. "I beat Gary Kasparov, Deep Blue, and now I will destroy you."
+    * STATE MACHINE
         - Game Over Player X Wins
         - START Screen P1 P2? or AI -- Option to replace ball with Gopher
+    * Add option to map 2 game controllers 🕹️x2 to use the y axis to play because it is more fun at a demo
+    * Make branch for SIMPLEST version possible, and write about each step, for demo etc.
 
 
 
