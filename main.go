@@ -112,6 +112,7 @@ func (b *Ball) drawBall(screen *ebiten.Image) {
 func (d *Ball) update() {
 	if state.start {
 		if ebiten.IsKeyPressed(ebiten.KeySpace) || ebiten.IsKeyPressed(ebiten.KeyEnter) {
+			playBounce("start")
 			dirX := float32(1.0)
 			if rand.Float32() < .5 {
 				dirX = -dirX
@@ -131,6 +132,7 @@ func (d *Ball) collide() {
 	//bounce off top or bottom
 	if d.y <= 0 || d.y >= screenHeight {
 		d.vy = -d.vy
+		playBounce("wall")
 	}
 	//out of bounds left/right
 	if d.x < 0 {
@@ -149,6 +151,7 @@ func (d *Ball) collide() {
 	if d.vx < 0 {
 		//check to see if ball collides with player 1 paddle on left
 		if d.x <= p1.x && p1.x <= d.x+PaddleWidth && p1.y <= d.y && d.y <= PaddleHeight+p1.y {
+			playBounce("paddle")
 			d.vy = -d.vy * (rand.Float32() + 1) // Add some randomness
 			d.vx = -d.vx
 			//cap the ball speed or else it gets too fast and flies through the paddles without getting detected as a collision!
@@ -160,6 +163,7 @@ func (d *Ball) collide() {
 	if d.vx > 0 {
 		//check to see if ball collides with player 2 paddle on right
 		if d.x <= p2.x && p2.x <= d.x+PaddleWidth && p2.y <= d.y && d.y <= PaddleHeight+p2.y {
+			playBounce("paddle")
 			d.vy = -d.vy * (rand.Float32() + 1)
 			d.vx = -d.vx
 			if d.speed < 5.0 {
