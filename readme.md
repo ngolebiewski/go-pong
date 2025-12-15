@@ -16,6 +16,8 @@ Theoretically, to present in a short talk where I will live code Pong.
 
 Fun, as Go is known as a backend language.
 
+![Animated GIF of black and white PONG remake where 2 paddles are volleying the ball.](pong_volley.gif)
+
 ### INSTALL & RUN
 
 - (Step 0) Install Go if you don't have it. https://go.dev/dl/
