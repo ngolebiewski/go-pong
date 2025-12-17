@@ -90,16 +90,16 @@ func (d Paddle) drawPaddle(p *Paddle, screen *ebiten.Image) {
 }
 
 func (d *Paddle) updatePaddle1() {
-	if ebiten.IsKeyPressed(ebiten.KeyW) && d.y >= 0 {
+	if (ebiten.IsKeyPressed(ebiten.KeyW) || gamepadUp(0)) && d.y >= 0 {
 		d.y += -PaddleSpeed
-	} else if ebiten.IsKeyPressed(ebiten.KeyS) && d.y <= screenHeight-PaddleHeight {
+	} else if (ebiten.IsKeyPressed(ebiten.KeyS) || gamepadDown(0)) && d.y <= screenHeight-PaddleHeight {
 		d.y += PaddleSpeed
 	}
 }
 func (d *Paddle) updatePaddle2() {
-	if (ebiten.IsKeyPressed(ebiten.KeyUp) || ebiten.IsKeyPressed(ebiten.KeyArrowUp)) && d.y >= 0 {
+	if (ebiten.IsKeyPressed(ebiten.KeyUp) || ebiten.IsKeyPressed(ebiten.KeyArrowUp) || gamepadUp(1)) && d.y >= 0 {
 		d.y += -4.0
-	} else if (ebiten.IsKeyPressed(ebiten.KeyDown) || ebiten.IsKeyPressed(ebiten.KeyArrowDown)) && d.y <= screenHeight-PaddleHeight {
+	} else if (ebiten.IsKeyPressed(ebiten.KeyDown) || ebiten.IsKeyPressed(ebiten.KeyArrowDown) || gamepadDown(1)) && d.y <= screenHeight-PaddleHeight {
 		d.y += 4.0
 	}
 }
@@ -111,7 +111,18 @@ func (b *Ball) drawBall(screen *ebiten.Image) {
 
 func (d *Ball) update() {
 	if state.start {
-		if ebiten.IsKeyPressed(ebiten.KeySpace) || ebiten.IsKeyPressed(ebiten.KeyEnter) {
+		startPressed :=
+			ebiten.IsKeyPressed(ebiten.KeySpace) ||
+				ebiten.IsKeyPressed(ebiten.KeyEnter)
+
+		// Gamepads 0 and 1
+		for _, gp := range []ebiten.GamepadID{0, 1, 2, 3, 4} {
+			if startButtonPressed(gp) {
+				startPressed = true
+			}
+		}
+
+		if startPressed {
 			playBounce("start")
 			dirX := float32(1.0)
 			if rand.Float32() < .5 {
@@ -120,9 +131,11 @@ func (d *Ball) update() {
 			d.vx += dirX
 			d.vy += float32(math.Min((rand.Float64()-.5)*4, 1.8))
 			fmt.Println("Random start velocity -- vx:", d.vx, "vy:", d.vy)
-			state.start = !state.start
+			state.start = !state.start // Still needed?
+			startPressed = false
 		}
 	}
+
 	//move ball
 	d.x += d.vx * d.speed
 	d.y += d.vy * d.speed
