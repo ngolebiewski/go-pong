@@ -81,6 +81,10 @@ func keyListener() error {
 		state.AI = !state.AI
 		fmt.Println("AI mode is turned", map[bool]string{true: "on", false: "off"}[state.AI])
 	}
+	// Toggle logic: sets fullscreen to the opposite of current state
+	if inpututil.IsKeyJustPressed(ebiten.KeyF) {
+		ebiten.SetFullscreen(!ebiten.IsFullscreen())
+	}
 	return nil
 }
 

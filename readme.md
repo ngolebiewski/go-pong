@@ -10,9 +10,10 @@ Theoretically, to present in a short talk where I will live code Pong.
 | Move Up | W | Up Arrow |
 | Move Down | S | Down Arrow |
 | Serve Ball | Space or Enter | - |
-| Reset Game | R | - |
+| Reset Game | R | R |
 | Quit Game | Click on X (Upper Left) | Q |
-| Toggle AI Mode | A | - |
+| Toggle AI Mode | A | A |
+| Fullscreen On/Off | F | F |
 
 Fun, as Go is known as a backend language.
 
