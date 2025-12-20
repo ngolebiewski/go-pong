@@ -155,11 +155,13 @@ func (d *Ball) collide() {
 	if d.x < 0 {
 		player2.score++
 		fmt.Println("LEFT Player One: ", player1.score, " Player Two: ", player2.score)
+		playBounce("out")
 		d.reset()
 	}
 	if d.x > screenWidth {
 		player1.score++
 		fmt.Println("RIGHT Player One: ", player1.score, " Player Two: ", player2.score)
+		playBounce("out")
 		d.reset()
 	}
 
@@ -215,11 +217,11 @@ func dumbAI(p *Paddle, b *Ball) {
 
 	} else {
 		//move paddle up
-		if b.y < p.y+(ballWidth*2) && p.y >= 0 {
+		if b.y < p.y+(PaddleHeight/2) && p.y >= 0 {
 			p.y -= 4
 		}
 		//down
-		if b.y > p.y && p.y+(PaddleHeight/2) <= screenHeight {
+		if b.y > p.y && p.y+(PaddleHeight) <= screenHeight {
 			p.y += 4
 		}
 	}

@@ -20,6 +20,9 @@ func playBounce(kind string) {
 	if kind == "start" {
 		freq = 500.0
 	}
+	if kind == "out" {
+		freq = 250.0
+	}
 
 	const (
 		duration = 0.04
