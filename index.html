@@ -1,10 +1,10 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <title>Go Pong x Nick Golebiewski</title>
-    <html lang="en">
 
-    </html>
+    <link rel="icon" type="image/x-icon" href="/pong-favicon.png">
     <script src="wasm_exec.js"></script>
     <style>
         body {
@@ -17,8 +17,10 @@
 <body>
     <script>
         const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("yourgame.wasm"), go.importObject).then(result => {
+        WebAssembly.instantiateStreaming(fetch("go-pong.wasm"), go.importObject).then(result => {
             go.run(result.instance);
         });
     </script>
 </body>
+
+</html>
