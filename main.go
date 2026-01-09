@@ -230,7 +230,6 @@ func dumbAI(p *Paddle, b *Ball) {
 func (g *Game) Update() error {
 	p1.updatePaddle1()
 	if state.AI {
-		// dumbAI(&p2, &ball)
 		dumbAI(&p2, &ball)
 	} else {
 		p2.updatePaddle2()
@@ -240,7 +239,7 @@ func (g *Game) Update() error {
 	// MORE GAME FUNCTIONALITY HERE!
 	// Hit R to RESET GAME & Q to QUIT on desktop
 	if err := keyListener(); err != nil {
-		return err // ✨ MUST return this!
+		return err
 	}
 	return nil
 }
